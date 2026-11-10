@@ -49,9 +49,22 @@ changed:   wrote "copy it without the line numbers" into the read_file and edit_
 
 ## My entries
 
+## Entry 1
+artifact:  .env setup and model prices (Part 0)
+tool:      OpenAI API, model gpt-5.6-luna, 2026-11-09
+prompts:   none (no AI tool used for this step)
+review:    looked up the model's prices on OpenAI's GPT-5.6 Luna model page
+           (https://developers.openai.com/api/docs/models/gpt-5.6-luna.md):
+           $0.20 per 1M input tokens, $1.20 per 1M output tokens. The main pricing
+           page now lists gpt-6-luna instead; kept gpt-5.6-luna, the handout default
+checks:    python -m agent check-setup: all checks passed; tool calling works
+           (143 tokens in, 13 out)
+evidence:  HANDOUT Part 0
+risk:      prices may change after 2026-11-09
+
 ## Entry 2
 artifact:  agent/tools.py, agent/policy.py, agent/loop.py, agent/reflexion.py, server.py
-           at commit <SHA>
+           at commit 18e2588
 tool:      Claude (claude.ai), model Claude Opus 5.5, 2026-11-09
 prompts:   gave it the assignment text and asked it to complete the parts;
            prompts/parts1-5-claude.md
