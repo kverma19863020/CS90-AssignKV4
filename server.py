@@ -22,12 +22,20 @@ from mcp.server import MCPServer
 
 from agent import tools
 
-# TODO(Part 5): create the server, register the tools, and write main(). About 15 lines.
-mcp = None
+mcp = MCPServer("a4-tools")
+
+# Each function's name, docstring and parameters become the tool's name, description
+# and input schema, so an MCP host sees exactly what the local agent's model sees.
+for fn in tools.TOOLS:
+    mcp.add_tool(fn)
 
 
 def main() -> None:
-    raise NotImplementedError("Part 5: write server.py")
+    parser = argparse.ArgumentParser(description="The a4-tools MCP server.")
+    parser.add_argument("--workspace", required=True, help="the project folder the tools work in")
+    args = parser.parse_args()
+    tools.use_workspace(args.workspace)
+    mcp.run(transport="stdio")
 
 
 if __name__ == "__main__":

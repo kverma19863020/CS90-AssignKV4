@@ -37,7 +37,19 @@ TESTS_RULE = "The tests check the spec, so this agent may not edit files in test
 #     A path that is missing or not a string is not inside tests/.
 #   - Anything else: (GATES[tool_name], "")
 def gate_for(tool_name: str, args: dict[str, Any]) -> tuple[str, str]:
-    raise NotImplementedError("Part 2: write gate_for in agent/policy.py")
+    if tool_name not in GATES:
+        return "deny", f"{tool_name} is not one of this agent's tools."
+    if tool_name == "edit_file" and _in_tests(args.get("path")):
+        return "deny", TESTS_RULE
+    return GATES[tool_name], ""
+
+
+def _in_tests(path: Any) -> bool:
+    """True if path points into the tests/ folder, however it is spelled."""
+    if not isinstance(path, str):
+        return False
+    norm = posixpath.normpath(path.replace("\\", "/"))
+    return norm == "tests" or norm.startswith("tests/")
 
 
 # budget_stop(steps, tokens, limits) is checked before every model call.
@@ -46,7 +58,11 @@ def gate_for(tool_name: str, args: dict[str, Any]) -> tuple[str, str]:
 #   - tokens >= limits.max_tokens: return f"token budget reached: {tokens} of {limits.max_tokens} tokens"
 #   - otherwise return None. Check the step budget first.
 def budget_stop(steps: int, tokens: int, limits: Limits) -> str | None:
-    raise NotImplementedError("Part 2: write budget_stop in agent/policy.py")
+    if steps >= limits.max_steps:
+        return f"step budget reached: {steps} of {limits.max_steps} model calls"
+    if tokens >= limits.max_tokens:
+        return f"token budget reached: {tokens} of {limits.max_tokens} tokens"
+    return None
 
 
 # is_stuck(last_output, output, edits_since_last_run) is checked after every run_tests call.
@@ -59,4 +75,4 @@ def budget_stop(steps: int, tokens: int, limits: Limits) -> str | None:
 #   This is the "same failure twice" rule, made safe for an agent that simply runs the
 #   tests twice in a row.
 def is_stuck(last_output: str | None, output: str, edits_since_last_run: int) -> bool:
-    raise NotImplementedError("Part 2: write is_stuck in agent/policy.py")
+    return output.startswith("FAILED") and output == last_output and edits_since_last_run >= 1

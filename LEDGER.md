@@ -48,3 +48,16 @@ changed:   wrote "copy it without the line numbers" into the read_file and edit_
 ```
 
 ## My entries
+
+## Entry 2
+artifact:  agent/tools.py, agent/policy.py, agent/loop.py, agent/reflexion.py, server.py
+           at commit <SHA>
+tool:      Claude (claude.ai), model Claude Opus 5.5, 2026-11-09
+prompts:   gave it the assignment text and asked it to complete the parts;
+           prompts/parts1-5-claude.md
+review:    TODO (you): read every function against the comment above it. Note what you
+           checked, anything you changed or rejected, and why
+checks:    pytest: 40 passed; python -m agent check-mcp: all checks passed
+evidence:  HANDOUT Parts 1 to 5; the comments above each function
+risk:      the hidden tests check more cases than the public ones; the tool
+           descriptions are untested on a real model until the recorded runs
