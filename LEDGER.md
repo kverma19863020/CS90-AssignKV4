@@ -88,3 +88,48 @@ checks:    pytest: 40 passed; python -m agent check-mcp: all checks passed; edge
 evidence:  HANDOUT Parts 1 to 5; the comments above each function
 risk:      the hidden tests check more cases than the public ones; the tool
            descriptions are untested on a real model until the recorded runs
+
+## Entry 3
+artifact:  runs/runA, agent code at commit 7a6efe3
+tool:      my agent (python -m agent run runA), openai gpt-5.6-luna, 2026-11-15
+prompts:   the default task and BASE_SYSTEM in agent/loop.py; prompts/runA-task.md
+review:    read every event in trace.jsonl. Attempt 1, step 1 list_files; step 2 read
+           discounts.py, spec.md and tests/test_discounts.py and ran run_tests in one
+           turn (FAILED: 1 of 4, ValueError: unknown code: save10). It asked for
+           limit=240 and read_file capped it. Step 3 made one edit: code.upper() before
+           the CODES lookup, plus "if today > last_day: raise ValueError" for the expiry
+           rule in spec.md. I read the diff and approved it. Mistake: the handout said to
+           reject the first edit, and I approved it, so this run has no rejection. I did
+           not record it again, because the rules allow that only for outside failures
+checks:    python -m agent check-trace runA: complete, 9 events, 7 tool calls;
+           python -m agent replay runA: matches its trace
+evidence:  HANDOUT Part 6; runs/runA/trace.jsonl, attempt 1, steps 1 to 5
+risk:      the rejection-as-feedback path was not tested on a real model in this run;
+           the judge's 6 tests are the only check of the expiry rule
+dataset:   fixture/ at commit 7a6efe3, task "Make the tests pass."
+result:    stopped done after 5 model calls, 7628 input and 450 output tokens, about
+           $0.0021; visible tests 4 of 4; judge PASS, 6 of 6; runs/runA/trace.jsonl
+changed:   nothing in the code; next time, reject the first edit as the handout asks
+
+## Entry 4
+artifact:  runs/runB, agent code at commit 7a6efe3, tools from server.py over MCP
+tool:      my agent (python -m agent run runB --tools mcp --judge), openai gpt-5.6-luna,
+           2026-11-15
+prompts:   the default task and BASE_SYSTEM in agent/loop.py, NOTES.md empty at start;
+           prompts/runB-task.md
+review:    read every event in trace.jsonl and runs/runB/server.log. Same tool order
+           as runA: step 1 list_files, step 2 three read_file calls and run_tests
+           (FAILED: 1 of 4), step 3 one edit with the same fix as runA (upper() and
+           the expiry check), which I read and approved, step 4 run_tests PASSED 4 of
+           4. The judge passed attempt 1, so no lesson was written and NOTES.md is
+           still empty
+checks:    python -m agent check-trace runB: complete, 9 events, 7 tool calls;
+           python -m agent replay runB: matches its trace
+evidence:  HANDOUT Part 4 and Part 6; runs/runB/trace.jsonl, attempt 1, steps 1 to 5
+risk:      Reflexion's second attempt never ran, so lesson writing is tested only by
+           pytest, not on a real model
+dataset:   fixture/ at commit 7a6efe3, task "Make the tests pass."
+result:    stopped done after 5 model calls, 7779 input and 461 output tokens, about
+           $0.0021; visible tests 4 of 4; judge PASS, 6 of 6 at attempt 1; no lesson;
+           runs/runB/trace.jsonl
+changed:   nothing
