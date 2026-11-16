@@ -1,0 +1,17 @@
+Results for runs/vendor/workspace
+
+Visible tests (the workspace's tests/ folder):
+PASSED: 4 of 4 tests passed.
+
+Judge (judge/acceptance_test.py):
+FAILED: 1 of 6 tests did not pass.
+FAIL test_rule_4_code_is_rejected_after_its_last_day: AssertionError: ValueError not raised
+
+Files that differ from fixture/: discounts.py (changed)
+
+--- fixture/discounts.py
++++ workspace/discounts.py
+@@ -15,2 +15,3 @@
+         return total_cents
++    code = code.upper()
+     if code not in CODES:

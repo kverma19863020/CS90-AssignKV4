@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "a4-tools": {
+      "type": "stdio",
+      "command": "/Users/mayra/cs690/CS90-AssignKV4/.venv/bin/python",
+      "args": [
+        "/Users/mayra/cs690/CS90-AssignKV4/server.py",
+        "--workspace",
+        "runs/terminal/workspace"
+      ],
+      "env": {}
+    }
+  }
+}
