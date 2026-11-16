@@ -26,5 +26,12 @@
   apply_discount (discounts.py:16) does a direct code not in CODES lookup with
   no case normalization — so the lowercase code isn't found and it raises
   ValueError: unknown code: save10 instead of applying the discount.
+--- Tool
 
 ✻ Baked for 15s
+---
+Note: Claude Code's /export saved the two a4-tools calls collapsed ("Called a4-tools 2
+times"). They were run_tests, which returned "FAILED: 1 of 4 tests did not pass.
+ERROR test_lowercase_code_works: ValueError: unknown code: save10", and read_file on
+discounts.py, which returned its 20 lines. The expanded text could not be recovered
+from the export.

@@ -40,3 +40,8 @@
   for it. I can add both if you want.
 
 ✻ Cogitated for 17s · done 9:51 PM
+---
+Note: /export saved the shell commands collapsed. The fixer ran "python -m unittest"
+in runs/vendor/workspace before and after its edit (1 failure, then 4 of 4 passed).
+My answers to its permission prompts: approved the one edit to discounts.py after
+reading the diff; approved both test runs; rejected nothing.
