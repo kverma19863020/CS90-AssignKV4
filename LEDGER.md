@@ -68,9 +68,23 @@ artifact:  agent/tools.py, agent/policy.py, agent/loop.py, agent/reflexion.py, s
 tool:      Claude (claude.ai), model Claude Opus 5.5, 2026-11-09
 prompts:   gave it the assignment text and asked it to complete the parts;
            prompts/parts1-5-claude.md
-review:    TODO (you): read every function against the comment above it. Note what you
-           checked, anything you changed or rejected, and why
-checks:    pytest: 40 passed; python -m agent check-mcp: all checks passed
+review:    read every function against the comment above it. tools.py: safe_path refuses
+           absolute paths and anything that resolves outside the workspace (tried
+           ../judge/acceptance_test.py and /etc/passwd; "." is allowed); read_file caps
+           limit at 200 and its description says to leave out the line numbers;
+           edit_file counts matches first and leaves the file unchanged on 0, 2+ or empty
+           old_text (tried "the", 4 matches); format_report shows no timings, so the stuck
+           rule can compare outputs. policy.py: gate_for denies tests/x.py, ./tests/x.py,
+           tests\x.py and src/../tests/x.py but not testsx.py, and denies unknown tools;
+           is_stuck needs FAILED + same text + at least one edit. loop.py: stuck check
+           runs after the for loop, so every call in a turn gets its tool result; one
+           stop event per exit; denied tools are never offered. reflexion.py: NOTES.md is
+           re-read each attempt, an "error" run stops without a retry, and the lesson is
+           one line of at most 600 characters. server.py: importing it does not start the
+           server. No changes made; no agent framework used
+checks:    pytest: 40 passed; python -m agent check-mcp: all checks passed; edge
+           cases above run by hand on a copy of fixture/ (run_tests there: FAILED: 1 of 4,
+           test_lowercase_code_works, ValueError: unknown code: save10)
 evidence:  HANDOUT Parts 1 to 5; the comments above each function
 risk:      the hidden tests check more cases than the public ones; the tool
            descriptions are untested on a real model until the recorded runs
